@@ -76,9 +76,9 @@ public class Configuration implements Cloneable {
      *      states "critical region size of gameboard must be at least 1"
      * - If {@link this#criticalRegionSize} is an even number, throw {@link InvalidConfigurationError}
      *      states "critical region size of gameboard must be an odd number"
-     * - If {@link this#criticalRegionSize} is mover than board size - 2, throw {@link InvalidConfigurationError}
+     * - If {@link this#criticalRegionSize} is more than board size - 2, throw {@link InvalidConfigurationError}
      *      states "critical region size of gameboard is at most size of gameboard - 2"
-     * - If {@link this#criticalRegionSize} is larger than board size or smaller than 1,
+     * - If {@link this#criticalRegionCapacity} is larger than board size or smaller than 1,
      *      throw {@link InvalidConfigurationError}
      *      states "capacity of critical region size for each player of gameboard is at least 1 and at most size
      *      of game board"
