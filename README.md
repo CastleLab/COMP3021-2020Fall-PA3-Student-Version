@@ -2,9 +2,10 @@
 
 PA3 is to implement a **multi-threaded text** version of the game in PA1. There are a few changes in the rules.
 
-**Reminder**
+## Reminders ##
 
-- Please ask questions using "Issues" on this github repository in case other students have same questions.
+- **Please ask questions using "Issues" on this github repository in case other students have same questions.**
+- **Checked the [`Closed Issues`](https://github.com/CastleLab/COMP3021-2020Fall-PA3-Student-Version/issues?q=is%3Aissue) for questions asked by others which have been resolved.**
 - Add TAs as cooperators to your private GitHub repository.
 
   -  arabela_tso@outlook.com
