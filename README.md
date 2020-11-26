@@ -239,13 +239,13 @@ Besides, a map from piece to the corresponding thread should be recorded.
 A critical region is added into configuration. It is prescribed by `criticalRegionSize` and `criticalRegionCapacity`.
 
 - `criticalRegionSize`: the size of critical region. The requirement is specified in JavaDoc.
-- `criticalRegionCapacity`: the maximum number of pieces inside the critical region.
+- `criticalRegionCapacity`: the maximum number of `Knights` of each player inside the critical region.
 
 
 
 **Example**:
 
- In a 5 * 5 board, which center place lies in the center of the 3rd row. Suppose `criticalRegionSize = 3` and `criticalRegionCapacity = 2`, then for the critical region row 2-4 (in total row 1-5), there are at most 2 pieces (regardless to which player that they belong) in it (row 2-4).
+ In a 5 * 5 board, which center place lies in the center of the 3rd row. Suppose `criticalRegionSize = 3` and `criticalRegionCapacity = 2`, then for the critical region row 2-4 (in total row 1-5), there are at most 2 kngiths of each player in it (row 2-4).
 
 
 
