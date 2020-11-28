@@ -5,3 +5,5 @@
 # IntelliJ project files
 out
 gen
+/.idea/shelf/
+/.idea/workspace.xml
