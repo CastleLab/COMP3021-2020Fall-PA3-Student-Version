@@ -271,30 +271,6 @@ public class Configuration implements Cloneable {
         this.numMovesProtection = numMovesProtection;
     }
 
-    public boolean isWhitePlayerHuman() {
-        return players[0] instanceof ConsolePlayer;
-    }
-
-    public boolean isBlackPlayerHuman() {
-        return players[1] instanceof ConsolePlayer;
-    }
-
-    public void setWhitePlayer(boolean isHuman) {
-        if (isHuman) {
-            players[0] = new ConsolePlayer("White");
-        } else {
-            players[0] = new ComputerPlayer("White");
-        }
-    }
-
-    public void setBlackPlayer(boolean isHuman) {
-        if (isHuman) {
-            players[1] = new ConsolePlayer("Black");
-        } else {
-            players[1] = new ComputerPlayer("Black");
-        }
-    }
-
     public void setAllInitialPieces() {
         Player whitePlayer = this.getPlayers()[1];
         Player blackPlayer = this.getPlayers()[0];
