@@ -193,7 +193,9 @@ public class JesonMor extends Game {
      *          the returned available moves should be an array of ALL available moves
      * - for {@link ComputerPlayer}:
      *          before a candidate move is proposed, print "Computer is figuring out next move..."
-     *          return an array containing only ONE move selected from all available moves
+     *          return an array containing candidate moves proposed by each piece thread of computer player. 
+     *          Paused/terminated pieces will not propose candidate moves. 
+     *          The number of moves in the array should be the same as the number of non-paused/non-terminated pieces. 
      *
      * @param player the player whose available moves to get
      * @return an array of available moves
