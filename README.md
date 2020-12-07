@@ -211,15 +211,15 @@ Besides, since each piece has it's own behavioral preference, so when designing 
 
 ##### Terminate (TerminatePieceAction)
 
-- Description: Terminate a piece thread at the given place. The piece should belong to computer player, and the place should have a piece. Once stopped, the piece cannot propose moves (thus cannot move) any more, and cannot be resumed.
+- Description: Terminate a piece thread at the given place. The piece should belong to computer player, and the place should have a piece. Once terminated, the piece cannot propose moves (thus cannot move) any more, and cannot be resumed.
 
 - Usage
 
   ```
-  [White] Make a Move/Action: stop a1
+  [White] Make a Move/Action: terminate a1
   ```
 
-- This action will call `stop`method in `Piece` class. The following situations should be considered:
+- This action will call `terminate` method in `Piece` class. The following situations should be considered:
   - Works normally
   - If piece does not exist at the given place
   - If the piece does not belong to computer player
