@@ -3,8 +3,10 @@ package castle.comp3021.assignment.piece;
 import castle.comp3021.assignment.protocol.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -91,7 +93,17 @@ public class Knight extends Piece {
     @Override
     public synchronized Move getCandidateMove(Game game, Place source) {
         //TODO
-        return null;
+        var parameters = new Object[]{game, source};
+        try {
+            this.calculateMoveParametersQueue.put(parameters);
+            var move = this.candidateMoveQueue.poll(1, TimeUnit.SECONDS);
+            if (move instanceof InvalidMove) {
+                return null;
+            }
+            return move;
+        } catch (InterruptedException ignored) {
+            return null;
+        }
     }
 
     private boolean validateMove(Game game, Move move) {
@@ -103,7 +115,6 @@ public class Knight extends Piece {
                 new FirstNMovesProtectionRule(game.getConfiguration().getNumMovesProtection()),
                 new KnightMoveRule(),
                 new KnightBlockRule(),
-                // newly added rule
                 new CriticalRegionRule(),
         };
         for (var rule :
@@ -114,7 +125,6 @@ public class Knight extends Piece {
         }
         return true;
     }
-
 
     /**
      * An atomic boolean variable which marks whether this piece thread is running
@@ -133,52 +143,85 @@ public class Knight extends Piece {
     /**
      * Pause this piece thread.
      * Hint:
-     *     - Using {@link Knight#running}
+     * - Using {@link Knight#running}
      */
     @Override
     public void pause() {
         //TODO
+        running.set(false);
     }
 
     /**
      * Resume the piece thread
      * Hint:
-     *      - Using {@link Knight#running}
-     *      - Using {@link Object#notifyAll()}
+     * - Using {@link Knight#running}
+     * - Using {@link Object#notifyAll()}
      */
     @Override
     public void resume() {
         //TODO
+        running.set(true);
+        synchronized (running) {
+            running.notifyAll();
+        }
     }
 
     /**
      * Stop the piece thread
      * Hint:
-     *     - Using {@link Knight#stopped}
-     *     - Please do NOT use the deprecated {@link Thread#stop}
+     * - Using {@link Knight#stopped}
      */
     @Override
     public void terminate() {
         //TODO
+        stopped.set(true);
     }
 
     /**
      * The piece should be runnable
      * Consider the following situations:
-     *      - When it is NOT the turn of the player which this piece belongs to:
-     *          - this thread should be waiting ({@link Object#wait()})
-     *      - When it is the turn of the player which this piece belongs to (marked by {@link Knight#running}):
-     *          - take out the {@link Game} and {@link Place} objects from calculateMoveParametersQueue
-     *          - propose a candidate move (you may take advantage of {@link Archer#getAvailableMoves}
-     *            using {@link MakeMoveByBehavior#getNextMove()} according to {@link this#behavior}
-     *                      come up with any strategy to pick one from {@link Knight#getAvailableMoves(Game, Place)}
-     *          - add the proposed candidate move to {@link Knight#candidateMoveQueue}
-     *      - When this piece has been stopped (marked by {@link Knight#stopped}): no more reaction
-     *      - Handle {@link InterruptedException}
-     *  Hint: the same as {@link Archer#run()}
+     * - When it is NOT the turn of the player which this piece belongs to:
+     * - this thread should be waiting ({@link Object#wait()})
+     * - When it is the turn of the player which this piece belongs to (marked by {@link Knight#running}):
+     * - take out the {@link Game} and {@link Place} objects from calculateMoveParametersQueue
+     * - propose a candidate move
+     * - if {@link this#behavior} is {@link Behavior#RANDOM}:
+     * randomly pick one from {@link Knight#getAvailableMoves(Game, Place)}
+     * - if {@link this#behavior} is {@link Behavior#GREEDY}:
+     * come up with any strategy to pick one from {@link Knight#getAvailableMoves(Game, Place)}
+     * - add the proposed candidate move to {@link Knight#candidateMoveQueue}
+     * - When this piece has been stopped (marked by {@link Knight#stopped}): no more reaction
+     * - Handle {@link InterruptedException}
      */
     @Override
     public void run() {
         //TODO
+        while (true) {
+            try {
+                if (stopped.get()) {
+                    return;
+                }
+
+                synchronized (running) {
+                    while (!running.get()) {
+                        running.wait();
+                    }
+                }
+
+                // wait until it is time to calculate move
+                var parameters = this.calculateMoveParametersQueue.take();
+                var game = (Game) parameters[0];
+                var source = (Place) parameters[1];
+                var moves = this.getAvailableMoves(game, source);
+                var rand = new Random();
+                if (moves.length == 0) {
+                    this.candidateMoveQueue.put(new InvalidMove());
+                } else {
+                    this.candidateMoveQueue.put(new MoveByBehavior(game, moves, this.behavior).getNextMove());
+                }
+            } catch (InterruptedException e) {
+//                System.out.println("Piece is interrupted");
+            }
+        }
     }
 }

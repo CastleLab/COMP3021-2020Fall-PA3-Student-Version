@@ -1,6 +1,5 @@
 package castle.comp3021.assignment.protocol;
 
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

@@ -4,7 +4,6 @@ import castle.comp3021.assignment.player.HumanPlayer;
 import castle.comp3021.assignment.protocol.Color;
 import castle.comp3021.assignment.protocol.Game;
 import castle.comp3021.assignment.protocol.Move;
-import castle.comp3021.assignment.protocol.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;

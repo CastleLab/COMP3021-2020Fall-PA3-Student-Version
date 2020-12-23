@@ -70,19 +70,6 @@ public class Configuration implements Cloneable {
 
     protected int numMovesProtection;
 
-    /**
-     * Add configuration validation for critical region
-     * - If {@link this#criticalRegionSize} is smaller than 1, throw {@link InvalidConfigurationError}
-     *      states "critical region size of gameboard must be at least 1"
-     * - If {@link this#criticalRegionSize} is an even number, throw {@link InvalidConfigurationError}
-     *      states "critical region size of gameboard must be an odd number"
-     * - If {@link this#criticalRegionSize} is more than board size - 2, throw {@link InvalidConfigurationError}
-     *      states "critical region size of gameboard is at most size of gameboard - 2"
-     * - If {@link this#criticalRegionCapacity} is larger than board size or smaller than 1,
-     *      throw {@link InvalidConfigurationError}
-     *      states "capacity of critical region size for each player of gameboard is at least 1 and at most size
-     *      of game board"
-     */
     public void validateConfiguration() {
         // validate size
         if (size < 3) {
@@ -96,7 +83,20 @@ public class Configuration implements Cloneable {
         }
 
         //TODO
-        // validate {@link this#criticalRegionSize} here
+        if (criticalRegionSize < 1) {
+            throw new InvalidConfigurationError("critical region size of gameboard must be at least 1");
+        }
+        if (criticalRegionSize % 2 != 1) {
+            throw new InvalidConfigurationError("critical region size of gameboard must be an odd number");
+        }
+        if (criticalRegionSize > size - 2) {
+            throw new InvalidConfigurationError("critical region size of gameboard is at most size of gameboard - 2");
+        }
+
+        if (criticalRegionCapacity < 1 || criticalRegionCapacity > size) {
+            throw new InvalidConfigurationError("capacity of critical region size for each player of gameboard is at " +
+                    "least 1 and at most size of game board");
+        }
 
         //validate number of players
         if (players.length != 2) {
@@ -115,6 +115,21 @@ public class Configuration implements Cloneable {
      * @param size size of the game board.
      */
     public Configuration(int size, Player[] players, int numMovesProtection, int criticalRegionSize, int criticalRegionCapacity) {
+//        // validate size
+//        if (size < 3) {
+//            throw new InvalidConfigurationError("size of gameboard must be at least 3");
+//        }
+//        if (size % 2 != 1) {
+//            throw new InvalidConfigurationError("size of gameboard must be an odd number");
+//        }
+//        if (size > 26) {
+//            throw new InvalidConfigurationError("size of gameboard is at most 26");
+//        }
+//
+//        if (numMovesProtection < 0) {
+//            throw new InvalidConfigurationError("number of moves with capture protection cannot be negative");
+//        }
+
         this.size = size;
         this.criticalRegionSize = criticalRegionSize;
         this.criticalRegionCapacity = criticalRegionCapacity;
@@ -165,11 +180,12 @@ public class Configuration implements Cloneable {
     /**
      * Add piece to the initial game board.
      * The player that this piece belongs to will be automatically added into the configuration.
-     *
+     * <p>
      * - create a thread for this piece
      * - start the thread
      * Hint:
-     *      remember to record this thread to {@link Configuration#pieceThreadMap}
+     * remember to record this thread to {@link Configuration#pieceThreadMap}
+     *
      * @param piece piece to be added
      * @param place place to put the piece
      */
@@ -190,7 +206,11 @@ public class Configuration implements Cloneable {
         this.initialBoard[place.x()][place.y()] = piece;
 
         // TODO
-        // start piece thread and update {@link Configuration#pieceThreadMap} here
+        if (piece.getPlayer() instanceof ComputerPlayer) {
+            var thread = new Thread(piece);
+            this.pieceThreadMap.put(piece, thread);
+            thread.start();
+        }
     }
 
     public void addInitialPiece(Piece piece, int x, int y) {
@@ -269,6 +289,30 @@ public class Configuration implements Cloneable {
 
     public void setNumMovesProtection(int numMovesProtection) {
         this.numMovesProtection = numMovesProtection;
+    }
+
+    public boolean isWhitePlayerHuman() {
+        return players[0] instanceof ConsolePlayer;
+    }
+
+    public boolean isBlackPlayerHuman() {
+        return players[1] instanceof ConsolePlayer;
+    }
+
+    public void setWhitePlayer(boolean isHuman) {
+        if (isHuman) {
+            players[0] = new ConsolePlayer("White");
+        } else {
+            players[0] = new ComputerPlayer("White");
+        }
+    }
+
+    public void setBlackPlayer(boolean isHuman) {
+        if (isHuman) {
+            players[1] = new ConsolePlayer("Black");
+        } else {
+            players[1] = new ComputerPlayer("Black");
+        }
     }
 
     public void setAllInitialPieces() {

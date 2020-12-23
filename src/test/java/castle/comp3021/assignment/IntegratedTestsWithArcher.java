@@ -4,13 +4,11 @@ import castle.comp3021.assignment.textversion.JesonMor;
 import castle.comp3021.assignment.mock.MockPlayer;
 import castle.comp3021.assignment.piece.Archer;
 import castle.comp3021.assignment.piece.Knight;
-import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.protocol.*;
 import castle.comp3021.assignment.util.PA1Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

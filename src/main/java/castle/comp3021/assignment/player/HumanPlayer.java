@@ -1,7 +1,6 @@
 package castle.comp3021.assignment.player;
 
 import castle.comp3021.assignment.protocol.*;
-import castle.comp3021.assignment.protocol.Strategy;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class HumanPlayer extends Player {

@@ -2,10 +2,9 @@
 
 PA3 is to implement a **multi-threaded text** version of the game in PA1. There are a few changes in the rules.
 
-## Reminders ##
+**Reminder**
 
-- **Please ask questions using "Issues" on this github repository in case other students have same questions.**
-- **Please check the [`Closed Issues`](https://github.com/CastleLab/COMP3021-2020Fall-PA3-Student-Version/issues?q=is%3Aissue) for questions asked by others which have been resolved.**
+- Please ask questions using "Issues" on this github repository in case other students have same questions.
 - Add TAs as cooperators to your private GitHub repository.
 
   -  arabela_tso@outlook.com
@@ -211,15 +210,15 @@ Besides, since each piece has it's own behavioral preference, so when designing 
 
 ##### Terminate (TerminatePieceAction)
 
-- Description: Terminate a piece thread at the given place. The piece should belong to computer player, and the place should have a piece. Once terminated, the piece cannot propose moves (thus cannot move) any more, and cannot be resumed.
+- Description: Terminate a piece thread at the given place. The piece should belong to computer player, and the place should have a piece. Once stopped, the piece cannot propose moves (thus cannot move) any more, and cannot be resumed.
 
 - Usage
 
   ```
-  [White] Make a Move/Action: terminate a1
+  [White] Make a Move/Action: stop a1
   ```
 
-- This action will call `terminate` method in `Piece` class. The following situations should be considered:
+- This action will call `stop`method in `Piece` class. The following situations should be considered:
   - Works normally
   - If piece does not exist at the given place
   - If the piece does not belong to computer player
@@ -239,13 +238,13 @@ Besides, a map from piece to the corresponding thread should be recorded.
 A critical region is added into configuration. It is prescribed by `criticalRegionSize` and `criticalRegionCapacity`.
 
 - `criticalRegionSize`: the size of critical region. The requirement is specified in JavaDoc.
-- `criticalRegionCapacity`: the maximum number of `Knights` of each player inside the critical region.
+- `criticalRegionCapacity`: the maximum number of pieces inside the critical region.
 
 
 
 **Example**:
 
- In a 5 * 5 board, which center place lies in the center of the 3rd row. Suppose `criticalRegionSize = 3` and `criticalRegionCapacity = 2`, then for the critical region row 2-4 (in total row 1-5), there are at most 2 kngiths of each player in it (row 2-4).
+ In a 5 * 5 board, which center place lies in the center of the 3rd row. Suppose `criticalRegionSize = 3` and `criticalRegionCapacity = 2`, then for the critical region row 2-4 (in total row 1-5), there are at most 2 pieces (regardless to which player that they belong) in it (row 2-4).
 
 
 
@@ -352,7 +351,7 @@ Code of this assignment depends on several libraries, including `JUnit5` and Jet
 
 ### Program Entry
 
-The main method is at `castle.comp3021.assignment.textversion.Main` class.
+The main method is at `castle.comp3021.assignment.Main` class.
 
 
 
@@ -388,7 +387,7 @@ Your submission is a zip file including:
 You need to submit your zip file in [CASS](https://cssystem.cse.ust.hk/UGuides/cass/index.html) (not CANVAS).
 Please also push on your github repository before the deadline!
 
-The deadline of assignment 3 is **`10 Dec. 2020, 23:55`**. 
+The deadline of assignment 3 is **`7 Dec. 2020, 23:55`**. 
 
 
 

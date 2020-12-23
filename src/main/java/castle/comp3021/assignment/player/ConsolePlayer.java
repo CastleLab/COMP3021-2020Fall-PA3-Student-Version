@@ -68,25 +68,24 @@ public class ConsolePlayer extends HumanPlayer {
      * Given a {@link Game} object and the input string, return {@link Action} if it is a valid action string
      * Valid input action strings:
      * - undo:
-     *      - format: undo
-     *      - description: undo till the human player's move
-     *      - implemented in {@link Game#undo()}
+     * - format: undo
+     * - description: undo till the human player's move
+     * - implemented in {@link Game#undo()}
      * - history:
-     *      - format: history
-     *      - description: show history
-     *      - implemented in {@link Game#showHistoryMove()}
+     * - format: history
+     * - description: show history
      * - pause:
-     *      - format: pause {@link Place} (example: pause a1)
-     *      - description: pause a piece at the given place
-     *      - implemented in {@link Piece#pause()}
+     * - format: pause {@link Place} (example: pause a1)
+     * - description: pause a piece at the given place
+     * - implemented in {@link Piece#pause()}
      * - resume:
-     *      - format: resume {@link Place} (example: resume a1)
-     *      - description: resume a piece the given place
-     *      - implemented in {@link Piece#resume()}
+     * - format: resume {@link Place} (example: resume a1)
+     * - description: resume a piece the given place
+     * - implemented in {@link Piece#resume()}
      * - stop:
-     *      - format: terminate {@link Place} (example: terminate a1)
-     *      - description: terminates a piece the given place, once terminates, that piece cannot be resumed again
-     *      - implemented in {@link Piece#terminate()}
+     * - format: terminate {@link Place} (example: terminate a1)
+     * - description: terminates a piece the given place, once terminates, that piece cannot be resumed again
+     * - implemented in {@link Piece#terminate()}
      *
      * @param game {@link Game} object
      * @param str  The input from console, options include: undo, pause, resume and terminate. Not necessarily be an
@@ -96,8 +95,6 @@ public class ConsolePlayer extends HumanPlayer {
     private static Action parseAction(Game game, String str) {
         str = str.strip();
         var segments = Arrays.stream(str.split(" ")).filter(s -> s.length() > 0).collect(Collectors.toList());
-
-        // args starts after the actional keyword, e.g., the input string "pause a1", args = "a1"
         var args = segments.subList(1, segments.size()).toArray(new String[]{});
         switch (segments.get(0)) {
             case "undo" -> {
@@ -115,8 +112,10 @@ public class ConsolePlayer extends HumanPlayer {
             case "terminate" -> {
                 return new TerminatePieceAction(game, args);
             }
+            default -> {
+                return null;
+            }
         }
-        return null;
     }
 
     public static Place parsePlace(String str) {

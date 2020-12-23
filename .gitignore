@@ -3,7 +3,31 @@
 ### Example user template
 
 # IntelliJ project files
+.idea
+*.iml
 out
 gen
-/.idea/shelf/
-/.idea/workspace.xml
+### Maven template
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
+
+
+.DS_Store
+
+artifacts/original-PA2-fat.jar
+artifacts/PA2-fat.jar
+artifacts/PA-2.jar
+artifacts/PA2_obfuscated.jar
+artifacts/PA-3.jar
+artifacts/PA3_obfuscated.jar
+artifacts/proguard_map.txt
+artifacts/proguard_seed.txt
